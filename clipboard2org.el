@@ -35,7 +35,7 @@ It inserts the image by first saving it with a random name in a ./img/ sub-direc
          (data-png (gui-backend-get-selection 'PRIMARY 'image/png))
          (data-jpg (gui-backend-get-selection 'PRIMARY 'image/jpeg))
          (text-raw (gui-get-selection)))
-    (cond (data-jpg (clipboard2org--image data-png ".jpg"))
+    (cond (data-jpg (clipboard2org--image data-jpg ".jpg"))
           (data-png (clipboard2org--image data-png ".png"))
           (data-html (clipboard2org--html data-html))
           (text-raw (yank)))))
