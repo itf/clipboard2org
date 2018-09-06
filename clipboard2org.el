@@ -52,8 +52,7 @@ HTML-DATA: html data from the clipboard"
   "Insert image into the buffer.
 IMAGE-DATA: Raw image-data from the clipboard
 EXTENSION: the image extensions, for example png, jpg. Additional support for others is trivial."
-  (let* ((decoded-image-data (decode-coding-string image-data 'utf-8 t nil))
-         (image-directory "./img/")
+  (let* ((image-directory "./img/")
          (temp-file-name
           (let ((coding-system-for-write 'raw-text)
                 (buffer-file-coding-system 'raw-text))
