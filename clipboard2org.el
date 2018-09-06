@@ -6,7 +6,8 @@
 ;; And it automatically save images in png or jpeg from the clipboard to a
 ;; sub-directory ./img/ by generating a random name, and then inserts it in the
 ;; org file.
-
+;; 
+;; Inspired by https://emacs.stackexchange.com/questions/12121/org-mode-parsing-rich-html-directly-when-pasting
 
 ;;; License:
 
