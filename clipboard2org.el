@@ -44,7 +44,7 @@ It inserts the image by first saving it with a random name in a ./img/ sub-direc
   "Insert html data into the buffer.
 HTML-DATA: html data from the clipboard"
   (let* ((decoded-html (decode-coding-string html-data 'unix))
-         (text-html (shell-command-to-string (concat "echo "  (shell-quote-argument decoded-html) "|timeout 2  pandoc -f html-native_divs-native_spans -t org"))))
+         (text-html (shell-command-to-string (concat "echo "  (shell-quote-argument decoded-html) "|timeout 2  pandoc --wrap=preserve -f html-native_divs-native_spans -t org"))))
     (insert text-html)))
   
 
@@ -58,13 +58,13 @@ EXTENSION: the image extensions, for example png, jpg. Additional support for ot
                 (buffer-file-coding-system 'raw-text))
             (make-directory image-directory t)
             (make-temp-file "img" nil extension image-data)))
-         (new-name (concat image-directory  (file-name-nondirectory temp-file-name))))
+         (file-name (replace-regexp-in-string "\\." "" (format "%s" (float-time))))
+         (new-name (concat image-directory  file-name  extension)))
     (rename-file temp-file-name  new-name)
     (insert "#+ATTR_ORG: :width 300\n")
     (insert (concat  "#+CAPTION: "  "\n"))
     (insert (concat "[[file:" new-name "][file:" new-name "]]"))
     (org-display-inline-images)))
-
 
 (provide 'clipboard2org)
 ;;; clipboard2org.el ends here
