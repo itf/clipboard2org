@@ -29,16 +29,31 @@
 ;;; Code:
 (defun clipboard2org-paste()
   "Paste HTML as org by using pandoc, or insert an image from the clipboard.
-It inserts the image by first saving it with a random name in a ./img/ sub-directory"
+It inserts the image by first saving it with the unixtime name in a ./img/ sub-directory"
   (interactive)
-  (let* ((data-html (gui-backend-get-selection 'PRIMARY 'text/html))
+  (let* ((data-file (gui-backend-get-selection 'CLIPBOARD 'text/uri-list))
+         (data-html (gui-backend-get-selection 'PRIMARY 'text/html))
          (data-png (gui-backend-get-selection 'PRIMARY 'image/png))
          (data-jpg (gui-backend-get-selection 'PRIMARY 'image/jpeg))
          (text-raw (gui-get-selection)))
-    (cond (data-jpg (clipboard2org--image data-jpg ".jpg"))
-          (data-png (clipboard2org--image data-png ".png"))
-          (data-html (clipboard2org--html data-html))
-          (text-raw (yank)))))
+    (cond
+     (data-file (clipboard2org--file data-file))
+     (data-jpg (clipboard2org--image data-jpg ".jpg"))
+     (data-png (clipboard2org--image data-png ".png"))
+     (data-html (clipboard2org--html data-html))
+     (text-raw (yank)))))
+
+
+(defun clipboard2org--file(file-url)
+  "Inserts a list of files. Useful if you copied files from your file explorer 
+and want to insert links to them into your org file"
+  (let* ((decoded-file-url (decode-coding-string file-url 'raw-text t nil))
+         (decoded-file-url (substring decoded-file-url 0 -1))
+         (file-list (split-string decoded-file-url)))
+    (dolist (file-url file-list)
+      (let* ((file-url (replace-regexp-in-string "%20" " " file-url))
+            (file-name (file-name-nondirectory file-url)))
+      (insert (concat "[["file-url"]["file-name "]]\n"))))))
 
 (defun clipboard2org--html(html-data)
   "Insert html data into the buffer.
