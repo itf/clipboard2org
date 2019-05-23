@@ -1,5 +1,5 @@
 # clipboard2org
-Paste html or images to an org file.
+Paste html, or paste images or paste lists of files to an org file. 
 
 This package converts HTML copied in the clipboard to ORG by using Pandoc
 And it automatically save images in png or jpeg from the clipboard to a
