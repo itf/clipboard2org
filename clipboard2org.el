@@ -32,9 +32,9 @@
 It inserts the image by first saving it with the unixtime name in a ./img/ sub-directory"
   (interactive)
   (let* ((data-file (gui-backend-get-selection 'CLIPBOARD 'text/uri-list))
-         (data-html (gui-backend-get-selection 'PRIMARY 'text/html))
-         (data-png (gui-backend-get-selection 'PRIMARY 'image/png))
-         (data-jpg (gui-backend-get-selection 'PRIMARY 'image/jpeg))
+         (data-html (or (gui-backend-get-selection 'PRIMARY 'text/html) (gui-backend-get-selection 'CLIPBOARD 'text/html)))
+         (data-png (or (gui-backend-get-selection 'PRIMARY 'image/png) (gui-backend-get-selection 'CLIPBOARD 'image/png)))
+         (data-jpg (or (gui-backend-get-selection 'PRIMARY 'image/jpeg) (gui-backend-get-selection 'CLIPBOARD 'image/jpeg)))
          (text-raw (gui-get-selection)))
     (cond
      (data-file (clipboard2org--file data-file))
